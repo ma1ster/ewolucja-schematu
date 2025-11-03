@@ -6,18 +6,18 @@ gateways:
       # https://sqlmesh.readthedocs.io/en/stable/reference/configuration/#connection
       # https://sqlmesh.readthedocs.io/en/stable/integrations/engines/snowflake/#connection-options
       type: snowflake
-      account:
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
       # concurrent_tasks: 4
       # register_comments: True
       # pre_ping: False
       # pretty_sql: False
       # schema_differ_overrides:
       # catalog_type_overrides:
-      # user:
-      # password:
-      # warehouse:
+      user: "{{ env_var('SNOWFLAKE_USERNAME') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE') }}"
       # database:
-      # role:
+      role: "{{ env_var('SNOWFLAKE_ROLE') }}"
       # authenticator:
       # token:
       # host:
