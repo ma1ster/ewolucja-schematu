@@ -1,19 +1,24 @@
 # --- Gateway Connection ---
 gateways:
-  dev:
-    connection:
-      type: duckdb
-      database: dev.db
-    state_schema: sqlmesh
-  test:
-    connection:
-      type: duckdb
-      database: test.db
-    state_schema: sqlmesh
+#  dev:
+#    connection:
+#      type: duckdb
+#      database: dev.db
+#    state_schema: sqlmesh
+#  test:
+#    connection:
+#      type: duckdb
+#      database: test.db
+#    state_schema: sqlmesh
+#  prod:
+#    connection:
+#      type: duckdb
+#      database: prod.db
+#    state_schema: sqlmesh
   prod:
     connection:
       type: duckdb
-      database: prod.db
+      database: "{{ env_var('SNOWFLAKE_DATABASE') }}.db"
     state_schema: sqlmesh
 #  snowflake:
 #    connection:
@@ -44,7 +49,7 @@ gateways:
 #      # session_parameters:
 #    state_schema: sqlmesh
 
-default_gateway: dev
+default_gateway: prod
 
 # --- Model Defaults ---
 # https://sqlmesh.readthedocs.io/en/stable/reference/model_configuration/#model-defaults
