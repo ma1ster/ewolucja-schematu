@@ -1,5 +1,10 @@
 # --- Gateway Connection ---
 gateways:
+  duckdb:
+    connection:
+      type: duckdb
+      database: local.db
+    state_schema: sqlmesh
   snowflake:
     connection:
       # For more information on configuring the connection to your execution engine, visit:
@@ -16,7 +21,7 @@ gateways:
       user: "{{ env_var('SNOWFLAKE_USERNAME') }}"
       password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
       warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE') }}"
-      # database:
+      database: DEV_DB
       role: "{{ env_var('SNOWFLAKE_ROLE') }}"
       # authenticator:
       # token:
@@ -27,8 +32,9 @@ gateways:
       # private_key_path:
       # private_key_passphrase:
       # session_parameters:
+    state_schema: sqlmesh
 
-default_gateway: snowflake
+default_gateway: duckdb
 
 # --- Model Defaults ---
 # https://sqlmesh.readthedocs.io/en/stable/reference/model_configuration/#model-defaults
