@@ -1,10 +1,7 @@
 MODEL (
   name staging.stg_orders,
-  kind INCREMENTAL_BY_TIME_RANGE (
-    time_column order_date,
-    batch_size 1,
-    lookback 3,
-    forward_only TRUE
+  kind INCREMENTAL_BY_UNIQUE_KEY (
+    unique_key order_id
   ),
   start '2018-01-01',
   cron '@daily',
