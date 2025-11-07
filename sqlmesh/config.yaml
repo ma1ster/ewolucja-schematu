@@ -1,55 +1,23 @@
 # --- Gateway Connection ---
 gateways:
-#  dev:
-#    connection:
-#      type: duckdb
-#      database: dev.db
-#    state_schema: sqlmesh
-#  test:
-#    connection:
-#      type: duckdb
-#      database: test.db
-#    state_schema: sqlmesh
-#  prod:
-#    connection:
-#      type: duckdb
-#      database: prod.db
-#    state_schema: sqlmesh
-  prod:
+  live:
     connection:
       type: duckdb
       database: "{{ env_var('SNOWFLAKE_DATABASE') }}.db"
     state_schema: sqlmesh
-#  snowflake:
+#  live:
 #    connection:
-#      # For more information on configuring the connection to your execution engine, visit:
-#      # https://sqlmesh.readthedocs.io/en/stable/reference/configuration/#connection
-#      # https://sqlmesh.readthedocs.io/en/stable/integrations/engines/snowflake/#connection-options
 #      type: snowflake
+#      concurrent_tasks: 10
 #      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
-#      # concurrent_tasks: 4
-#      # register_comments: True
-#      # pre_ping: False
-#      # pretty_sql: False
-#      # schema_differ_overrides:
-#      # catalog_type_overrides:
 #      user: "{{ env_var('SNOWFLAKE_USERNAME') }}"
 #      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
 #      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE') }}"
-#      database: DEV_DB
+#      database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
 #      role: "{{ env_var('SNOWFLAKE_ROLE') }}"
-#      # authenticator:
-#      # token:
-#      # host:
-#      # port:
-#      # application: Tobiko_SQLMesh
-#      # private_key:
-#      # private_key_path:
-#      # private_key_passphrase:
-#      # session_parameters:
 #    state_schema: sqlmesh
 
-default_gateway: prod
+default_gateway: live
 
 # --- Model Defaults ---
 # https://sqlmesh.readthedocs.io/en/stable/reference/model_configuration/#model-defaults
