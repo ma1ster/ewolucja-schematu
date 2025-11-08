@@ -1,0 +1,49 @@
+name: SQLMesh Bot
+run-name: 🚀SQLMesh Bot 🚀
+on:
+  pull_request:
+    types:
+    - synchronize
+    - opened
+# The latest commit is the one that will be used to create the PR environment and deploy to production
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+jobs:
+  sqlmesh:
+    name: SQLMesh Actions Workflow
+    runs-on: ubuntu-latest
+    env:
+      SNOWFLAKE_DATABASE: ${{ (github.head_ref || github.ref_name) == 'main' && 'SC_PROD' || (github.head_ref || github.ref_name) == 'test' && 'SC_TEST' || 'SC_DEV' }}
+    permissions:
+      # Required to access code in PR
+      contents: write
+      # Required to post comments
+      issues: write
+      # Required to update check runs
+      checks: write
+      # Required to merge
+      pull-requests: write
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v4
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: refs/pull/${{ github.event.issue.pull_request && github.event.issue.number || github.event.pull_request.number  }}/merge
+      # NEW: exposes GITHUB_HEAD_REF_SLUG, GITHUB_BASE_REF_SLUG, etc.
+      - name: Inject slugified refs
+        uses: rlespinasse/github-slug-action@v5
+        # optional: keep max length 63 (default)
+        with:
+          slug-maxlength: 63
+
+      - name: Install SQLMesh + Dependencies
+        run: pip install -r requirements.txt
+        shell: bash
+      - name: Run CI/CD Bot
+        env:
+          # Pure env expression: if base is dev -> use slug; else -> blue
+          PR_ENVIRONMENT_NAME: ${{ github.event.pull_request.base.ref == 'dev' && env.GITHUB_HEAD_REF_SLUG || 'blue' }}
+        run: |
+          sqlmesh_cicd -p ${{ github.workspace }} github --token ${{ secrets.GITHUB_TOKEN }} run-all

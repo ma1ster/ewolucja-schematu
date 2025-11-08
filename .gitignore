@@ -3,3 +3,4 @@
 *.log
 .cache/
 *.db
+.DS_Store

@@ -2,8 +2,11 @@
 gateways:
   live:
     connection:
-      type: duckdb
-      database: "{{ env_var('SNOWFLAKE_DATABASE') }}.db"
+      #type: duckdb
+      type: motherduck
+      #database: "{{ env_var('SNOWFLAKE_DATABASE') }}.db"
+      database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
+      token: "{{ env_var('MOTHERDUCK_TOKEN') }}"
     state_schema: sqlmesh
 #  live:
 #    connection:
@@ -37,3 +40,14 @@ linter:
     - ambiguousorinvalidcolumn
     - invalidselectstarexpansion
     - noambiguousprojections
+
+# --- CI/CD Bot Configuration ---
+# Configure PR runs to use the fixed "blue" environment and deploy to prod on merge
+cicd_bot:
+  type: github
+  # PR environment name is dynamic:
+  # - If PR targets `dev`, use a slug of the head ref (branch), underscores only
+  # - Otherwise, use "blue"
+  # The GitHub workflow sets PR_ENVIRONMENT_NAME accordingly.
+  pr_environment_name: "{{ env_var('PR_ENVIRONMENT_NAME') or 'blue' }}"
+  prod_branch_name: main
