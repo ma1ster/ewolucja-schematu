@@ -25,25 +25,25 @@ jobs:
       # Required to merge
       pull-requests: write
     steps:
-      - name: Setup Python
-        uses: actions/setup-python@v4
       - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
           ref: refs/pull/${{ github.event.issue.pull_request && github.event.issue.number || github.event.pull_request.number  }}/merge
-      # NEW: exposes GITHUB_HEAD_REF_SLUG, GITHUB_BASE_REF_SLUG, etc.
+
       - name: Inject slugified refs
         uses: rlespinasse/github-slug-action@v5
-        # optional: keep max length 63 (default)
         with:
           slug-maxlength: 63
 
-      - name: Install SQLMesh + Dependencies
-        run: pip install -r requirements.txt
-        shell: bash
+      - name: Install uv (with cache)
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
       - name: Run CI/CD Bot
+        working-directory: sqlmesh
         env:
           # Pure env expression: if base is dev -> use slug; else -> blue
           PR_ENVIRONMENT_NAME: ${{ github.event.pull_request.base.ref == 'dev' && env.GITHUB_HEAD_REF_SLUG || 'blue' }}
         run: |
-          sqlmesh_cicd -p ${{ github.workspace }} github --token ${{ secrets.GITHUB_TOKEN }} run-all
+          uv run sqlmesh_cicd -p ${{ github.workspace }} github --token ${{ secrets.GITHUB_TOKEN }} run-all
