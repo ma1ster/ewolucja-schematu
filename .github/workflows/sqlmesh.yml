@@ -1,5 +1,5 @@
-name: SQLMesh Bot
-run-name: 🚀SQLMesh Bot 🚀
+name: Wdrożenie
+run-name: 🚀 Wdrożenie 🚀
 on:
   pull_request:
     types:
@@ -25,7 +25,7 @@ jobs:
       # Required to merge
       pull-requests: write
     steps:
-      - name: Checkout PR branch
+      - name: Zmień gałęź
         uses: actions/checkout@v4
         with:
           ref: refs/pull/${{ github.event.issue.pull_request && github.event.issue.number || github.event.pull_request.number  }}/merge
@@ -38,7 +38,12 @@ jobs:
       - name: Zainstaluj uv (z mechanizmem cache)
         uses: astral-sh/setup-uv@v7
         with:
+          version: "0.9.8"
+          python-version-file: ".python-version"
           enable-cache: true
+
+      - name: Zainstaluj zależności
+        run: uv sync --locked --all-extras --dev
 
       - name: 🧪 SQLMesh — Testy jednostkowe i integracyjne
         if: github.event.pull_request.merged == false
