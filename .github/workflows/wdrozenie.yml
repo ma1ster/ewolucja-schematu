@@ -63,15 +63,6 @@ jobs:
         run: |
           uv run sqlmesh_cicd github --token ${{ secrets.GITHUB_TOKEN }} update-pr-environment
 
-      # Optional: only if you enabled required approvers in SQLMesh config
-      - name: ✅ SQLMesh — Sprawdź wymaganych zatwierdzających
-        if: github.event.pull_request.merged == false
-        working-directory: sqlmesh
-        env:
-          MOTHERDUCK_TOKEN: ${{ secrets.MOTHERDUCK_TOKEN }}
-        run: |
-          uv run sqlmesh_cicd github --token ${{ secrets.GITHUB_TOKEN }} check-required-approvers
-
       # Production deploy as a separate named step on merge to main
       - name: 🚀 SQLMesh — Wdróż na środowisko produkcyjne
         if: github.event.action == 'closed' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
