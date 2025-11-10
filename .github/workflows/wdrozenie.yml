@@ -10,8 +10,20 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 jobs:
+  checks:
+    name: Sprawdzenie semantyki kodu
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
+    steps:
+      - name: Zmień gałęź
+        uses: actions/checkout@v5
+      - name: Zainstaluj pre-commit i uruchom sprawdzenie kodu
+        uses: j178/prek-action@v1
   sqlmesh:
     name: Wdrożenie SQLMesh
+    needs: checks
     runs-on: ubuntu-latest
     env:
       SNOWFLAKE_DATABASE: ${{ (github.head_ref || github.ref_name) == 'main' && 'SC_PROD' || (github.head_ref || github.ref_name) == 'test' && 'SC_TEST' || 'SC_DEV' }}

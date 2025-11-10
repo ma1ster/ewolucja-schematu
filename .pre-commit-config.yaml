@@ -3,12 +3,29 @@ repos:
   rev: v6.0.0
   hooks:
   - id: check-yaml
+    name: "Sprawdz skladnie YAML"
   - id: end-of-file-fixer
+    name: "Nowy wiersz na końcu plików"
   - id: trailing-whitespace
-# - repo: https://github.com/sqlfluff/sqlfluff
-#   rev: 4.0.0a1
-#   hooks:
-#   - id: sqlfluff-lint
-#     args: ["--config", "pyproject.toml"]
-#   - id: sqlfluff-fix
-#     args: ["--config", "pyproject.toml"]
+    name: "Popraw białe znaki na koncu linii"
+  - id: check-added-large-files
+    args: ['--maxkb=500']
+    name: "Sprawdz duze pliki"
+  - id: check-merge-conflict
+    name: "Sprawdz konflikt scalania"
+  - id: check-toml
+    name: "Sprawdz skladnie TOML"
+  - id: mixed-line-ending
+    name: "Uspojnij zakonczenia plikow"
+
+- repo: https://github.com/rhysd/actionlint
+  rev: v1.7.8
+  hooks:
+  - id: actionlint
+    name: "Sprawdz skladnie GitHub Actions"
+
+- repo: https://github.com/gitleaks/gitleaks
+  rev: v8.24.2
+  hooks:
+  - id: gitleaks
+    name: "Sprawdz sekrety w kodzie"
