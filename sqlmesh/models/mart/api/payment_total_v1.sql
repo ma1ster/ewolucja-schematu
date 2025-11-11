@@ -3,7 +3,6 @@ MODEL (
   kind VIEW,
 );
 
-JINJA_QUERY_BEGIN;
 SELECT
     order_id,
     credit_card_amount,
@@ -11,6 +10,6 @@ SELECT
     bank_transfer_amount,
     gift_card_amount,
     amount,
-    {{ calculate_payment_totals() }}  -- This adds 2 columns
-FROM mart.orders_v1
-JINJA_END;
+    calculated_total,
+    amounts_match
+FROM mart.payment_total
