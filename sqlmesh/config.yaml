@@ -2,14 +2,14 @@
 gateways:
   live:
     connection:
-      type: motherduck
-      database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
-      token: "{{ env_var('MOTHERDUCK_TOKEN') }}"
-    state_schema: sqlmesh
-#    connection:
-#      type: duckdb
-#      database: "{{ env_var('SNOWFLAKE_DATABASE') }}.db"
-#  live:
+
+    #  type: motherduck
+    #  database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
+    #  token: "{{ env_var('MOTHERDUCK_TOKEN') }}"
+
+      type: duckdb
+      database: "{{ env_var('SNOWFLAKE_DATABASE') }}.db"
+
 #    connection:
 #      type: snowflake
 #      concurrent_tasks: 10
@@ -20,6 +20,7 @@ gateways:
 #      database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
 #      role: "{{ env_var('SNOWFLAKE_ROLE') }}"
 #    state_schema: sqlmesh
+    state_schema: sqlmesh
 
 default_gateway: live
 
