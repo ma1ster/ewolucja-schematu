@@ -17,15 +17,20 @@ MODEL (
 
 WITH customers AS (
   SELECT
-    *
+    customer_id,
+    first_name,
+    last_name
   FROM staging.stg_customers
 ), orders AS (
   SELECT
-    *
+    customer_id,
+    order_date,
+    order_id
   FROM staging.stg_orders
 ), payments AS (
   SELECT
-    *
+    order_id,
+    amount
   FROM staging.stg_payments
 ), customer_orders AS (
   SELECT

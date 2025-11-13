@@ -19,16 +19,12 @@ MODEL (
 
 WITH source AS (
   SELECT
-    *
-  FROM raw.raw_payments
-), renamed AS (
-  SELECT
     id AS payment_id,
     order_id,
     payment_method,
     amount /* `amount` is currently stored in cents, so we convert it to dollars */ / 100 AS amount,
     if (payment_method = 'coupon', 'true', 'false') AS discounted
-  FROM source
+  FROM raw.raw_payments
 )
 SELECT
   payment_id,
@@ -36,4 +32,4 @@ SELECT
   payment_method,
   amount,
   discounted
-FROM renamed
+FROM source

@@ -17,17 +17,13 @@ MODEL (
 
 WITH source AS (
   SELECT
-    *
-  FROM raw.raw_customers
-), renamed AS (
-  SELECT
     id AS customer_id,
     first_name,
     last_name
-  FROM source
+  FROM raw.raw_customers
 )
 SELECT
   customer_id,
   first_name,
   last_name
-FROM renamed
+FROM source
