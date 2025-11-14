@@ -1,6 +1,175 @@
+test_stg_payments:
+  model: staging.stg_payments
+  description: "Walidacja logiki modelu stg_payments"
+  inputs:
+    raw.raw_payments:
+      rows:
+        - id: 1
+          order_id: 1
+          payment_method: credit_card
+          amount: 1000
+
+        - id: 3
+          order_id: 3
+          payment_method: coupon
+          amount: 100
+
+        - id: 77
+          order_id: 67
+          payment_method: credit_card
+          amount: 1900
+
+        - id: 87
+          order_id: 77
+          payment_method: credit_card
+          amount: 0
+
+        - id: 88
+          order_id: 77
+          payment_method: bank_transfer
+          amount: 1900
+  outputs:
+    query:
+      rows:
+        - payment_id: 1
+          order_id: 1
+          payment_method: credit_card
+          amount: 10.0
+          discounted: 'false'
+
+        - payment_id: 3
+          order_id: 3
+          payment_method: coupon
+          amount: 1.0
+          discounted: 'true'
+
+        - payment_id: 77
+          order_id: 67
+          payment_method: credit_card
+          amount: 19.0
+          discounted: 'false'
+
+        - payment_id: 87
+          order_id: 77
+          payment_method: credit_card
+          amount: 0.0
+          discounted: 'false'
+
+        - payment_id: 88
+          order_id: 77
+          payment_method: bank_transfer
+          amount: 19.0
+          discounted: 'false'
+
+test_stg_orders:
+  model: staging.stg_orders
+  description: "Walidacja logiki modelu staging.stg_orders"
+  inputs:
+    raw.raw_orders:
+      rows:
+        - id: 1
+          user_id: 1
+          order_date: 1970-01-01
+          status: returned
+
+        - id: 2
+          user_id: 3
+          order_date: 1970-01-01
+          status: completed
+
+        - id: 23
+          user_id: 22
+          order_date: 1970-01-01
+          status: return_pending
+
+        - id: 71
+          user_id: 42
+          order_date: 1970-01-01
+          status: shipped
+
+        - id: 84
+          user_id: 70
+          order_date: 1970-01-01
+          status: placed
+  outputs:
+    query:
+      rows:
+        - order_id: 1
+          customer_id: 1
+          order_date: 1970-01-01
+          status: returned
+
+        - order_id: 2
+          customer_id: 3
+          order_date: 1970-01-01
+          status: completed
+
+        - order_id: 23
+          customer_id: 22
+          order_date: 1970-01-01
+          status: return_pending
+
+        - order_id: 71
+          customer_id: 42
+          order_date: 1970-01-01
+          status: shipped
+
+        - order_id: 84
+          customer_id: 70
+          order_date: 1970-01-01
+          status: placed
+
+test_stg_customers:
+  model: staging.stg_customers
+  description: "Walidacja logiki modelu staging.stg_customers"
+  inputs:
+    raw.raw_customers:
+      rows:
+        - id: 1
+          first_name: Michael
+          last_name: P.
+
+        - id: 25
+          first_name: Victor
+          last_name: H.
+
+        - id: 53
+          first_name: Anne
+          last_name: B.
+
+        - id: 84
+          first_name: Christina
+          last_name: R.
+
+        - id: 101
+          first_name: Andrew
+          last_name: C.
+  outputs:
+    query:
+      rows:
+        - customer_id: 1
+          first_name: Michael
+          last_name: P.
+
+        - customer_id: 25
+          first_name: Victor
+          last_name: H.
+
+        - customer_id: 53
+          first_name: Anne
+          last_name: B.
+
+        - customer_id: 84
+          first_name: Christina
+          last_name: R.
+
+        - customer_id: 101
+          first_name: Andrew
+          last_name: C.
+
 test_payment_total:
   model: mart.payment_total
-  description: "Validates calculate_payment_totals macro against a variety of order payment compositions: all-methods match, single-method match, mismatch case, rounding tolerance, and all-zeros."
+  description: "Walidacja modelu payment_total"
   inputs:
     mart.orders:
       rows:
@@ -107,72 +276,9 @@ test_payment_total:
           calculated_total: 0.0
           amounts_match: true
 
-test_stg_payments_transforms:
-  model: staging.stg_payments
-  description: "Ensures raw payments transform correctly: cents-to-dollars conversion and discounted flag set only for coupon, including zero-amount and multiple-method scenarios."
-  inputs:
-    raw.raw_payments:
-      rows:
-        - id: 1
-          order_id: 1
-          payment_method: credit_card
-          amount: 1000
-
-        - id: 3
-          order_id: 3
-          payment_method: coupon
-          amount: 100
-
-        - id: 77
-          order_id: 67
-          payment_method: credit_card
-          amount: 1900
-
-        - id: 87
-          order_id: 77
-          payment_method: credit_card
-          amount: 0
-
-        - id: 88
-          order_id: 77
-          payment_method: bank_transfer
-          amount: 1900
-  outputs:
-    query:
-      rows:
-        - payment_id: 1
-          order_id: 1
-          payment_method: credit_card
-          amount: 10.0
-          discounted: 'false'
-
-        - payment_id: 3
-          order_id: 3
-          payment_method: coupon
-          amount: 1.0
-          discounted: 'true'
-
-        - payment_id: 77
-          order_id: 67
-          payment_method: credit_card
-          amount: 19.0
-          discounted: 'false'
-
-        - payment_id: 87
-          order_id: 77
-          payment_method: credit_card
-          amount: 0.0
-          discounted: 'false'
-
-        - payment_id: 88
-          order_id: 77
-          payment_method: bank_transfer
-          amount: 19.0
-          discounted: 'false'
-
-test_orders_aggregations:
+test_orders:
   model: mart.orders
-  description: "Aggregates per payment method and total across staged payments. Covers coupon-only, multi-method (3 methods), zero-amount line item, and multiple same-method payments."
+  description: "Walidacja logiki modelu orders."
   inputs:
     mart.customers:
       rows:
@@ -322,9 +428,9 @@ test_orders_aggregations:
           gift_card_amount: 0.0
           amount: 15.0
 
-test_customers_lifetime_and_orders:
+test_customers:
   model: mart.customers
-  description: "Computes customer order metrics (first/most recent order, order count) and lifetime value by joining staged orders and payments. Includes multi-order customers and a customer with no orders (null metrics)."
+  description: "Walidacja logiki modelu orders."
   inputs:
     staging.stg_customers:
       rows:
@@ -420,3 +526,297 @@ test_customers_lifetime_and_orders:
           most_recent_order: null
           number_of_orders: null
           customer_lifetime_value: null
+
+test_payment_total_v1:
+  model: mart.payment_total_v1
+  description: "Walidacja logiki modelu payment_total_v1."
+  inputs:
+    mart.payment_total:
+      rows:
+        - order_id: 1
+          credit_card_amount: 10.0
+          coupon_amount: 5.0
+          bank_transfer_amount: 3.0
+          gift_card_amount: 2.0
+          amount: 20.0
+          calculated_total: 20.0
+          amounts_match: true
+
+        - order_id: 2
+          credit_card_amount: 50.0
+          coupon_amount: 0.0
+          bank_transfer_amount: 0.0
+          gift_card_amount: 0.0
+          amount: 50.0
+          calculated_total: 50.0
+          amounts_match: true
+
+        - order_id: 3
+          credit_card_amount: 25.0
+          coupon_amount: 10.0
+          bank_transfer_amount: 0.0
+          gift_card_amount: 5.0
+          amount: 45.0
+          calculated_total: 40.0
+          amounts_match: false
+
+        - order_id: 4
+          credit_card_amount: 10.33
+          coupon_amount: 10.33
+          bank_transfer_amount: 10.33
+          gift_card_amount: 0.0
+          amount: 31.0
+          calculated_total: 30.99
+          amounts_match: true
+
+        - order_id: 5
+          credit_card_amount: 0.0
+          coupon_amount: 0.0
+          bank_transfer_amount: 0.0
+          gift_card_amount: 0.0
+          amount: 0.0
+          calculated_total: 0.0
+          amounts_match: true
+  outputs:
+    query:
+      rows:
+        - order_id: 1
+          credit_card_amount: 10.0
+          coupon_amount: 5.0
+          bank_transfer_amount: 3.0
+          gift_card_amount: 2.0
+          amount: 20.0
+          calculated_total: 20.0
+          amounts_match: true
+
+        - order_id: 2
+          credit_card_amount: 50.0
+          coupon_amount: 0.0
+          bank_transfer_amount: 0.0
+          gift_card_amount: 0.0
+          amount: 50.0
+          calculated_total: 50.0
+          amounts_match: true
+
+        - order_id: 3
+          credit_card_amount: 25.0
+          coupon_amount: 10.0
+          bank_transfer_amount: 0.0
+          gift_card_amount: 5.0
+          amount: 45.0
+          calculated_total: 40.0
+          amounts_match: false
+
+        - order_id: 4
+          credit_card_amount: 10.33
+          coupon_amount: 10.33
+          bank_transfer_amount: 10.33
+          gift_card_amount: 0.0
+          amount: 31.0
+          calculated_total: 30.99
+          amounts_match: true
+
+        - order_id: 5
+          credit_card_amount: 0.0
+          coupon_amount: 0.0
+          bank_transfer_amount: 0.0
+          gift_card_amount: 0.0
+          amount: 0.0
+          calculated_total: 0.0
+          amounts_match: true
+
+test_orders_v1:
+  model: mart.orders_v1
+  description: "Walidacja logiki modelu orders_v1."
+  inputs:
+    mart.orders:
+      rows:
+        - order_id: 1
+          customer_id: 1
+          order_date: 2018-01-01
+          status: returned
+          credit_card_amount: 10.0
+          coupon_amount: 0.0
+          bank_transfer_amount: 0.0
+          gift_card_amount: 0.0
+          amount: 10.0
+
+        - order_id: 4
+          customer_id: 50
+          order_date: 2018-01-05
+          status: completed
+          credit_card_amount: 0.0
+          coupon_amount: 25.0
+          bank_transfer_amount: 0.0
+          gift_card_amount: 0.0
+          amount: 25.0
+
+        - order_id: 9
+          customer_id: 53
+          order_date: 2018-01-12
+          status: completed
+          credit_card_amount: 0.0
+          coupon_amount: 0.0
+          bank_transfer_amount: 0.0
+          gift_card_amount: 23.0
+          amount: 23.0
+
+        - order_id: 25
+          customer_id: 51
+          order_date: 2018-01-28
+          status: completed
+          credit_card_amount: 22.0
+          coupon_amount: 16.0
+          bank_transfer_amount: 20.0
+          gift_card_amount: 0.0
+          amount: 58.0
+
+        - order_id: 49
+          customer_id: 35
+          order_date: 2018-02-21
+          status: completed
+          credit_card_amount: 15.0
+          coupon_amount: 0.0
+          bank_transfer_amount: 0.0
+          gift_card_amount: 0.0
+          amount: 15.0
+  outputs:
+    query:
+      rows:
+        - order_id: 1
+          customer_id: 1
+          order_date: 2018-01-01
+          status: returned
+          credit_card_amount: 10.0
+          coupon_amount: 0.0
+          bank_transfer_amount: 0.0
+          gift_card_amount: 0.0
+          amount: 10.0
+
+        - order_id: 4
+          customer_id: 50
+          order_date: 2018-01-05
+          status: completed
+          credit_card_amount: 0.0
+          coupon_amount: 25.0
+          bank_transfer_amount: 0.0
+          gift_card_amount: 0.0
+          amount: 25.0
+
+        - order_id: 9
+          customer_id: 53
+          order_date: 2018-01-12
+          status: completed
+          credit_card_amount: 0.0
+          coupon_amount: 0.0
+          bank_transfer_amount: 0.0
+          gift_card_amount: 23.0
+          amount: 23.0
+
+        - order_id: 25
+          customer_id: 51
+          order_date: 2018-01-28
+          status: completed
+          credit_card_amount: 22.0
+          coupon_amount: 16.0
+          bank_transfer_amount: 20.0
+          gift_card_amount: 0.0
+          amount: 58.0
+
+        - order_id: 49
+          customer_id: 35
+          order_date: 2018-02-21
+          status: completed
+          credit_card_amount: 15.0
+          coupon_amount: 0.0
+          bank_transfer_amount: 0.0
+          gift_card_amount: 0.0
+          amount: 15.0
+
+test_customers_v1:
+  model: mart.customers_v1
+  description: "Walidacja logiki modelu customers_v1."
+  inputs:
+    mart.customers:
+      rows:
+        - customer_id: 53
+          first_name: Anne
+          last_name: B.
+          first_order: 2018-01-12
+          most_recent_order: 2018-03-11
+          number_of_orders: 2
+          customer_lifetime_value: 39.0
+
+        - customer_id: 25
+          first_name: Victor
+          last_name: H.
+          first_order: 2018-01-17
+          most_recent_order: 2018-03-20
+          number_of_orders: 2
+          customer_lifetime_value: 24.0
+
+        - customer_id: 101
+          first_name: Andrew
+          last_name: C.
+          first_order: null
+          most_recent_order: null
+          number_of_orders: null
+          customer_lifetime_value: null
+
+        - customer_id: 1
+          first_name: Michael
+          last_name: P.
+          first_order: 2018-01-01
+          most_recent_order: 2018-02-10
+          number_of_orders: 2
+          customer_lifetime_value: 33.0
+
+        - customer_id: 64
+          first_name: David
+          last_name: C.
+          first_order: 2018-01-05
+          most_recent_order: 2018-01-20
+          number_of_orders: 2
+          customer_lifetime_value: 30.0
+  outputs:
+    query:
+      rows:
+        - customer_id: 53
+          first_name: Anne
+          last_name: B.
+          first_order: 2018-01-12
+          most_recent_order: 2018-03-11
+          number_of_orders: 2
+          customer_lifetime_value: 39.0
+
+        - customer_id: 25
+          first_name: Victor
+          last_name: H.
+          first_order: 2018-01-17
+          most_recent_order: 2018-03-20
+          number_of_orders: 2
+          customer_lifetime_value: 24.0
+
+        - customer_id: 101
+          first_name: Andrew
+          last_name: C.
+          first_order: null
+          most_recent_order: null
+          number_of_orders: null
+          customer_lifetime_value: null
+
+        - customer_id: 1
+          first_name: Michael
+          last_name: P.
+          first_order: 2018-01-01
+          most_recent_order: 2018-02-10
+          number_of_orders: 2
+          customer_lifetime_value: 33.0
+
+        - customer_id: 64
+          first_name: David
+          last_name: C.
+          first_order: 2018-01-05
+          most_recent_order: 2018-01-20
+          number_of_orders: 2
+          customer_lifetime_value: 30.0
