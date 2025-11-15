@@ -33,7 +33,8 @@ with orders as (
       order_id,
       customer_id,
       order_date,
-      status
+      status,
+      orders_source
     from staging.stg_orders
 
 ),
@@ -75,8 +76,8 @@ final as (
         order_payments.coupon_amount,
         order_payments.bank_transfer_amount,
         order_payments.gift_card_amount,
-        order_payments.total_amount as amount
-
+        order_payments.total_amount as amount,
+        orders.orders_source
     from orders
 
     left join order_payments
@@ -93,5 +94,6 @@ select
   coupon_amount,
   bank_transfer_amount,
   gift_card_amount,
-  amount
+  amount,
+  orders_source
 from final;
