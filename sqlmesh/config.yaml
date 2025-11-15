@@ -1,0 +1,52 @@
+# --- Gateway Connection ---
+gateways:
+  live:
+    connection:
+
+      type: motherduck
+      database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
+      token: "{{ env_var('MOTHERDUCK_TOKEN') }}"
+
+    #  type: duckdb
+    #  database: "{{ env_var('SNOWFLAKE_DATABASE') }}.db"
+
+#    connection:
+#      type: snowflake
+#      concurrent_tasks: 10
+#      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+#      user: "{{ env_var('SNOWFLAKE_USERNAME') }}"
+#      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+#      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE') }}"
+#      database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
+#      role: "{{ env_var('SNOWFLAKE_ROLE') }}"
+#    state_schema: sqlmesh
+    state_schema: sqlmesh
+
+default_gateway: live
+
+# --- Model Defaults ---
+# https://sqlmesh.readthedocs.io/en/stable/reference/model_configuration/#model-defaults
+
+model_defaults:
+  dialect: snowflake
+  start: 2025-11-02
+  cron: '@daily'
+  owner: Marek Szkrobol
+
+# --- Linting Rules ---
+# Enforce standards for your team
+# https://sqlmesh.readthedocs.io/en/stable/guides/linter/
+
+linter:
+  enabled: true
+  rules:
+    - ambiguousorinvalidcolumn
+    - invalidselectstarexpansion
+    - noambiguousprojections
+
+# --- CI/CD Bot Configuration ---
+# Configure PR runs to use the fixed "blue" environment and deploy to prod on merge
+cicd_bot:
+  type: github
+  pr_environment_name: "{{ env_var('PR_ENVIRONMENT_NAME') or 'blue' }}"
+  prod_branch_name: main

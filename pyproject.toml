@@ -1,0 +1,14 @@
+[project]
+name = "ewolucja-schematu"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "sqlmesh[github,snowflake]>=0.227.1",
+]
+
+[dependency-groups]
+dev = [
+    "sqlmesh[lsp,web,dev]>=0.227.1",
+]
