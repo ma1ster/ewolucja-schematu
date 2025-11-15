@@ -3,12 +3,12 @@ gateways:
   live:
     connection:
 
-    #  type: motherduck
-    #  database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
-    #  token: "{{ env_var('MOTHERDUCK_TOKEN') }}"
+      type: motherduck
+      database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
+      token: "{{ env_var('MOTHERDUCK_TOKEN') }}"
 
-      type: duckdb
-      database: "{{ env_var('SNOWFLAKE_DATABASE') }}.db"
+    #  type: duckdb
+    #  database: "{{ env_var('SNOWFLAKE_DATABASE') }}.db"
 
 #    connection:
 #      type: snowflake
