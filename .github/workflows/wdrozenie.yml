@@ -13,7 +13,6 @@ concurrency:
 jobs:
   checks:
     name: Sprawdzenie semantyki kodu
-    if: github.event.pull_request.merged == false
     runs-on: ubuntu-latest
     permissions:
       contents: read
