@@ -1,5 +1,5 @@
 MODEL (
-  name mart.payment_total_v1,
+  name mart.order_payment_v1,
   kind VIEW,
 );
 
