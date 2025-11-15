@@ -6,7 +6,7 @@ MODEL (
   ),
   depends_on (),
   columns (
-    id INT,
+    id TEXT,
     user_id INT,
     order_date DATE,
     status TEXT
