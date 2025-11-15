@@ -13,7 +13,7 @@ SELECT
     coupon_amount,
     bank_transfer_amount,
     gift_card_amount,
-    amount,
+    quantity,
     {{ calculate_payment_totals() }}  -- This adds 2 columns
 FROM mart.orders
 JINJA_END;

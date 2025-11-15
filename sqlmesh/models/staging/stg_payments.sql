@@ -22,7 +22,7 @@ WITH source AS (
     id AS payment_id,
     order_id,
     payment_method,
-    amount /* `amount` is currently stored in cents, so we convert it to dollars */ / 100 AS amount,
+    quantity /* `amount` is currently stored in cents, so we convert it to dollars */ / 100 AS quantity,
     if (payment_method = 'coupon', 'true', 'false') AS discounted
   FROM raw.raw_payments
 )
@@ -30,6 +30,6 @@ SELECT
   payment_id,
   order_id,
   payment_method,
-  amount,
+  quantity,
   discounted
 FROM source

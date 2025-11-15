@@ -1,6 +1,6 @@
 /* This table has basic information about orders, as well as some derived facts based on payments */
 MODEL (
-  name mart.orders_v1,
+  name mart.orders_v2,
   kind VIEW,
 );
 
@@ -13,5 +13,5 @@ select
   coupon_amount,
   bank_transfer_amount,
   gift_card_amount,
-  quantity as amount
+  quantity
 from mart.orders;
