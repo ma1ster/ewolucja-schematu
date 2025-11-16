@@ -9,6 +9,7 @@ MODEL (
     id INT,
     user_id INT,
     order_date DATE,
-    status TEXT
+    status TEXT,
+    orders_source TEXT
   )
 )

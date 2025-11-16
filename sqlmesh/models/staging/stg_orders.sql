@@ -29,7 +29,8 @@ WITH source AS (
     id AS order_id,
     user_id AS customer_id,
     order_date,
-    status
+    status,
+    orders_source
   FROM raw.raw_orders
   WHERE
     order_date BETWEEN @start_ds AND @end_ds
@@ -38,5 +39,6 @@ SELECT
   order_id,
   customer_id,
   order_date,
-  status
+  status,
+  orders_source
 FROM source

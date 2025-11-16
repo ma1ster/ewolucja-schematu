@@ -13,5 +13,6 @@ select
   coupon_amount,
   bank_transfer_amount,
   gift_card_amount,
-  amount
+  amount,
+  orders_source
 from mart.orders;
