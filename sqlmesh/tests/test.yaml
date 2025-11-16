@@ -7,58 +7,58 @@ test_stg_payments:
         - id: 1
           order_id: 1
           payment_method: credit_card
-          amount: 1000
+          quantity: 1000
 
         - id: 3
           order_id: 3
           payment_method: coupon
-          amount: 100
+          quantity: 100
 
         - id: 77
           order_id: 67
           payment_method: credit_card
-          amount: 1900
+          quantity: 1900
 
         - id: 87
           order_id: 77
           payment_method: credit_card
-          amount: 0
+          quantity: 0
 
         - id: 88
           order_id: 77
           payment_method: bank_transfer
-          amount: 1900
+          quantity: 1900
   outputs:
     query:
       rows:
         - payment_id: 1
           order_id: 1
           payment_method: credit_card
-          amount: 10.0
+          quantity: 10.0
           discounted: 'false'
 
         - payment_id: 3
           order_id: 3
           payment_method: coupon
-          amount: 1.0
+          quantity: 1.0
           discounted: 'true'
 
         - payment_id: 77
           order_id: 67
           payment_method: credit_card
-          amount: 19.0
+          quantity: 19.0
           discounted: 'false'
 
         - payment_id: 87
           order_id: 77
           payment_method: credit_card
-          amount: 0.0
+          quantity: 0.0
           discounted: 'false'
 
         - payment_id: 88
           order_id: 77
           payment_method: bank_transfer
-          amount: 19.0
+          quantity: 19.0
           discounted: 'false'
 
 test_stg_orders:
@@ -182,7 +182,7 @@ test_payment_total:
           coupon_amount: 5.0
           bank_transfer_amount: 3.0
           gift_card_amount: 2.0
-          amount: 20.0
+          quantity: 20.0
 
         # Przypadek testowy 2: Tylko płatność kartą kredytową, zgodność całkowita
         - order_id: 2
@@ -193,7 +193,7 @@ test_payment_total:
           coupon_amount: 0.0
           bank_transfer_amount: 0.0
           gift_card_amount: 0.0
-          amount: 50.0
+          quantity: 50.0
 
         # Przypadek testowy 3: Płatności mieszane, suma nie zgadza się (różnica większa niż 0,01)
         - order_id: 3
@@ -204,7 +204,7 @@ test_payment_total:
           coupon_amount: 10.0
           bank_transfer_amount: 0.0
           gift_card_amount: 5.0
-          amount: 45.0
+          quantity: 45.0
 
         # Przypadek testowy 4: Całkowita liczba dopasowań w granicach tolerancji 0,01 (test zaokrąglania)
         - order_id: 4
@@ -215,7 +215,7 @@ test_payment_total:
           coupon_amount: 10.33
           bank_transfer_amount: 10.33
           gift_card_amount: 0.0
-          amount: 31.0
+          quantity: 31.0
 
         # Przypadek testowy 5: Wszystkie zera
         - order_id: 5
@@ -226,7 +226,7 @@ test_payment_total:
           coupon_amount: 0.0
           bank_transfer_amount: 0.0
           gift_card_amount: 0.0
-          amount: 0.0
+          quantity: 0.0
 
   outputs:
     query:
@@ -236,7 +236,7 @@ test_payment_total:
           coupon_amount: 5.0
           bank_transfer_amount: 3.0
           gift_card_amount: 2.0
-          amount: 20.0
+          quantity: 20.0
           calculated_total: 20.0
           amounts_match: true
 
@@ -245,7 +245,7 @@ test_payment_total:
           coupon_amount: 0.0
           bank_transfer_amount: 0.0
           gift_card_amount: 0.0
-          amount: 50.0
+          quantity: 50.0
           calculated_total: 50.0
           amounts_match: true
 
@@ -254,7 +254,7 @@ test_payment_total:
           coupon_amount: 10.0
           bank_transfer_amount: 0.0
           gift_card_amount: 5.0
-          amount: 45.0
+          quantity: 45.0
           calculated_total: 40.0
           amounts_match: false
 
@@ -263,7 +263,7 @@ test_payment_total:
           coupon_amount: 10.33
           bank_transfer_amount: 10.33
           gift_card_amount: 0.0
-          amount: 31.0
+          quantity: 31.0
           calculated_total: 30.99
           amounts_match: true
 
@@ -272,7 +272,7 @@ test_payment_total:
           coupon_amount: 0.0
           bank_transfer_amount: 0.0
           gift_card_amount: 0.0
-          amount: 0.0
+          quantity: 0.0
           calculated_total: 0.0
           amounts_match: true
 
@@ -341,49 +341,49 @@ test_orders:
         - payment_id: 4
           order_id: 4
           payment_method: coupon
-          amount: 25.0
+          quantity: 25.0
           discounted: 'true'
 
         - payment_id: 9
           order_id: 9
           payment_method: gift_card
-          amount: 23.0
+          quantity: 23.0
           discounted: 'false'
 
         - payment_id: 10
           order_id: 9
           payment_method: bank_transfer
-          amount: 0.0
+          quantity: 0.0
           discounted: 'false'
 
         - payment_id: 28
           order_id: 25
           payment_method: bank_transfer
-          amount: 20.0
+          quantity: 20.0
           discounted: 'false'
 
         - payment_id: 29
           order_id: 25
           payment_method: credit_card
-          amount: 22.0
+          quantity: 22.0
           discounted: 'false'
 
         - payment_id: 30
           order_id: 25
           payment_method: coupon
-          amount: 16.0
+          quantity: 16.0
           discounted: 'true'
 
         - payment_id: 54
           order_id: 49
           payment_method: credit_card
-          amount: 6.0
+          quantity: 6.0
           discounted: 'false'
 
         - payment_id: 55
           order_id: 49
           payment_method: credit_card
-          amount: 9.0
+          quantity: 9.0
           discounted: 'false'
   outputs:
     query:
@@ -396,7 +396,7 @@ test_orders:
           coupon_amount: 25.0
           bank_transfer_amount: 0.0
           gift_card_amount: 0.0
-          amount: 25.0
+          quantity: 25.0
 
         - order_id: 9
           customer_id: 53
@@ -406,7 +406,7 @@ test_orders:
           coupon_amount: 0.0
           bank_transfer_amount: 0.0
           gift_card_amount: 23.0
-          amount: 23.0
+          quantity: 23.0
 
         - order_id: 25
           customer_id: 51
@@ -416,7 +416,7 @@ test_orders:
           coupon_amount: 16.0
           bank_transfer_amount: 20.0
           gift_card_amount: 0.0
-          amount: 58.0
+          quantity: 58.0
 
         - order_id: 49
           customer_id: 35
@@ -426,7 +426,7 @@ test_orders:
           coupon_amount: 0.0
           bank_transfer_amount: 0.0
           gift_card_amount: 0.0
-          amount: 15.0
+          quantity: 15.0
 
 test_customers:
   model: mart.customers
@@ -473,31 +473,31 @@ test_customers:
         - payment_id: 9
           order_id: 9
           payment_method: gift_card
-          amount: 23.0
+          quantity: 23.0
           discounted: 'false'
 
         - payment_id: 10
           order_id: 9
           payment_method: bank_transfer
-          amount: 0.0
+          quantity: 0.0
           discounted: 'false'
 
         - payment_id: 78
           order_id: 68
           payment_method: credit_card
-          amount: 16.0
+          quantity: 16.0
           discounted: 'false'
 
         - payment_id: 17
           order_id: 15
           payment_method: coupon
-          amount: 22.0
+          quantity: 22.0
           discounted: 'true'
 
         - payment_id: 86
           order_id: 76
           payment_method: coupon
-          amount: 2.0
+          quantity: 2.0
           discounted: 'true'
 
   outputs:
@@ -538,7 +538,7 @@ test_payment_total_v1:
           coupon_amount: 5.0
           bank_transfer_amount: 3.0
           gift_card_amount: 2.0
-          amount: 20.0
+          quantity: 20.0
           calculated_total: 20.0
           amounts_match: true
 
@@ -547,7 +547,7 @@ test_payment_total_v1:
           coupon_amount: 0.0
           bank_transfer_amount: 0.0
           gift_card_amount: 0.0
-          amount: 50.0
+          quantity: 50.0
           calculated_total: 50.0
           amounts_match: true
 
@@ -556,7 +556,7 @@ test_payment_total_v1:
           coupon_amount: 10.0
           bank_transfer_amount: 0.0
           gift_card_amount: 5.0
-          amount: 45.0
+          quantity: 45.0
           calculated_total: 40.0
           amounts_match: false
 
@@ -565,7 +565,7 @@ test_payment_total_v1:
           coupon_amount: 10.33
           bank_transfer_amount: 10.33
           gift_card_amount: 0.0
-          amount: 31.0
+          quantity: 31.0
           calculated_total: 30.99
           amounts_match: true
 
@@ -574,7 +574,7 @@ test_payment_total_v1:
           coupon_amount: 0.0
           bank_transfer_amount: 0.0
           gift_card_amount: 0.0
-          amount: 0.0
+          quantity: 0.0
           calculated_total: 0.0
           amounts_match: true
   outputs:
@@ -639,7 +639,7 @@ test_orders_v1:
           coupon_amount: 0.0
           bank_transfer_amount: 0.0
           gift_card_amount: 0.0
-          amount: 10.0
+          quantity: 10.0
 
         - order_id: 4
           customer_id: 50
@@ -649,7 +649,7 @@ test_orders_v1:
           coupon_amount: 25.0
           bank_transfer_amount: 0.0
           gift_card_amount: 0.0
-          amount: 25.0
+          quantity: 25.0
 
         - order_id: 9
           customer_id: 53
@@ -659,7 +659,7 @@ test_orders_v1:
           coupon_amount: 0.0
           bank_transfer_amount: 0.0
           gift_card_amount: 23.0
-          amount: 23.0
+          quantity: 23.0
 
         - order_id: 25
           customer_id: 51
@@ -669,7 +669,7 @@ test_orders_v1:
           coupon_amount: 16.0
           bank_transfer_amount: 20.0
           gift_card_amount: 0.0
-          amount: 58.0
+          quantity: 58.0
 
         - order_id: 49
           customer_id: 35
@@ -679,7 +679,7 @@ test_orders_v1:
           coupon_amount: 0.0
           bank_transfer_amount: 0.0
           gift_card_amount: 0.0
-          amount: 15.0
+          quantity: 15.0
   outputs:
     query:
       rows:

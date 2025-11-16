@@ -30,7 +30,7 @@ WITH customers AS (
 ), payments AS (
   SELECT
     order_id,
-    amount
+    quantity
   FROM staging.stg_payments
 ), customer_orders AS (
   SELECT
@@ -44,7 +44,7 @@ WITH customers AS (
 ), customer_payments AS (
   SELECT
     orders.customer_id,
-    SUM(amount) AS total_amount
+    SUM(quantity) AS total_amount
   FROM payments
   LEFT JOIN orders
     ON payments.order_id = orders.order_id

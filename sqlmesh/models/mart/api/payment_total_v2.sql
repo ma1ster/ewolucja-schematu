@@ -1,5 +1,5 @@
 MODEL (
-  name mart.payment_total_v1,
+  name mart.payment_total_v2,
   kind VIEW,
 );
 
@@ -9,7 +9,7 @@ SELECT
     coupon_amount,
     bank_transfer_amount,
     gift_card_amount,
-    quantity as amount,
+    quantity,
     calculated_total,
     amounts_match
 FROM mart.payment_total

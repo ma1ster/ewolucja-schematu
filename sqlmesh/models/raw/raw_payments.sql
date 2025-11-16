@@ -9,6 +9,6 @@ MODEL (
     id INT,
     order_id INT,
     payment_method TEXT,
-    amount INT
+    quantity INT
   )
 )

@@ -16,7 +16,7 @@ MODEL (
         coupon_amount,
         bank_transfer_amount,
         gift_card_amount,
-        amount
+        quantity
       )
     ),
     ACCEPTED_VALUES(
@@ -43,7 +43,7 @@ payments as (
     select
       order_id,
       payment_method,
-      amount
+      quantity
     from staging.stg_payments
 
 ),
@@ -52,11 +52,11 @@ order_payments as (
 
     select
         order_id,
-        sum(case when payment_method = 'credit_card' then amount else 0 end) as credit_card_amount,
-        sum(case when payment_method = 'coupon' then amount else 0 end) as coupon_amount,
-        sum(case when payment_method = 'bank_transfer' then amount else 0 end) as bank_transfer_amount,
-        sum(case when payment_method = 'gift_card' then amount else 0 end) as gift_card_amount,
-        sum(amount) as total_amount
+        sum(case when payment_method = 'credit_card' then quantity else 0 end) as credit_card_amount,
+        sum(case when payment_method = 'coupon' then quantity else 0 end) as coupon_amount,
+        sum(case when payment_method = 'bank_transfer' then quantity else 0 end) as bank_transfer_amount,
+        sum(case when payment_method = 'gift_card' then quantity else 0 end) as gift_card_amount,
+        sum(quantity) as total_amount
 
     from payments
 
@@ -75,7 +75,7 @@ final as (
         order_payments.coupon_amount,
         order_payments.bank_transfer_amount,
         order_payments.gift_card_amount,
-        order_payments.total_amount as amount
+        order_payments.total_amount as quantity
 
     from orders
 
@@ -93,5 +93,5 @@ select
   coupon_amount,
   bank_transfer_amount,
   gift_card_amount,
-  amount
+  quantity
 from final;
