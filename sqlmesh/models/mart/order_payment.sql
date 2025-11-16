@@ -1,5 +1,5 @@
 MODEL (
-  name mart.payment_total,
+  name mart.order_payment,
   depends_on (
     mart.orders
   ),
