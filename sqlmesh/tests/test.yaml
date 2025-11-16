@@ -167,8 +167,8 @@ test_stg_customers:
           first_name: Andrew
           last_name: C.
 
-test_payment_total:
-  model: mart.payment_total
+test_order_payment:
+  model: mart.order_payment
   description: "Walidacja modelu payment_total"
   inputs:
     mart.orders:
@@ -531,7 +531,7 @@ test_payment_total_v1:
   model: mart.payment_total_v1
   description: "Walidacja logiki modelu payment_total_v1."
   inputs:
-    mart.payment_total:
+    mart.order_payment:
       rows:
         - order_id: 1
           credit_card_amount: 10.0
