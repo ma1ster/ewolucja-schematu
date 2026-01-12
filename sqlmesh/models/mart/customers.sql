@@ -35,7 +35,7 @@ WITH customers AS (
 ), customer_orders AS (
   SELECT
     customer_id,
-    MIN(order_date) AS first_order,
+    --MIN(order_date) AS first_order,
     MAX(order_date) AS most_recent_order,
     COUNT(order_id) AS number_of_orders
   FROM orders
@@ -55,7 +55,7 @@ WITH customers AS (
     customers.customer_id,
     customers.first_name,
     customers.last_name,
-    customer_orders.first_order,
+    --customer_orders.first_order,
     customer_orders.most_recent_order,
     customer_orders.number_of_orders,
     customer_payments.total_amount AS customer_lifetime_value
@@ -69,7 +69,7 @@ SELECT
   customer_id,
   first_name,
   last_name,
-  first_order,
+  --first_order,
   most_recent_order,
   number_of_orders,
   customer_lifetime_value

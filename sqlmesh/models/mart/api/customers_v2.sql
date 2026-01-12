@@ -1,6 +1,6 @@
 /* This table has basic information about a customer, as well as some derived facts based on a customer's orders */
 MODEL (
-  name mart.customers_v1,
+  name mart.customers_v2,
   kind VIEW,
 );
 
@@ -8,7 +8,6 @@ SELECT
   customer_id,
   first_name,
   last_name,
-  null::DATE as first_order,
   most_recent_order,
   number_of_orders,
   customer_lifetime_value
